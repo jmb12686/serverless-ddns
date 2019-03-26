@@ -12,12 +12,13 @@ provider:
 
 
 custom:
+  config: ${file(config.json)} 
   myStage: ${opt:stage, self:provider.stage}
   customDomain:
-    domainName: dev.myip.belisleonline.com
+    domainName: ${self:custom.config.apiDomainName}
     # stage: 
     # basePath: api
-    certificateName: 'dev.myip.belisleonline.com'
+    certificateName: '${self:custom.config.apiDomainName}'
     createRoute53Record: true
     endpointType: 'edge'  
 
@@ -48,9 +49,9 @@ functions:
     role: lambdaUpdateRoute53Role
     memorySize: 128
     environment:
-      DNS_HOST_NAME: home.belisleonline.com
-      HOSTED_ZONE_ID: Z1E1E8WAILPZ5
-      TOPIC_ARN: arn:aws:sns:us-east-1:197556904653:NotifyMe
+      DNS_HOST_NAME: ${self:custom.config.ddnsHostName}
+      HOSTED_ZONE_ID: ${self:custom.config.ddnsHostedZoneID}
+      TOPIC_ARN: ${self:custom.config.notificationTopicARN}
     events:      
       - http:
           path: /      

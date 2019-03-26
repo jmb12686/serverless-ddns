@@ -1,13 +1,13 @@
 {
   "name": "serverless-ddns",
   "version": "1.0.0",
-  "description": "",
+  "description": "Simple Dynamic DNS (DDNS) utilizing serverless architecture and framework for hosting on AWS",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "John Belisle",
   "license": "ISC",
   "devDependencies": {
     "serverless-aws-alias": "^1.7.1",
