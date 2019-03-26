@@ -13,8 +13,7 @@ const NotificationScript = require('./scripts/notificationScript');
 const notificationScript = new NotificationScript(sns, process.env.TOPIC_ARN);
 
 const UpdateDNSScript = require('./scripts/updateDNSScript');
-const updateDNSScript = new UpdateDNSScript(route53, notificationScript, process.env.HOSTED_ZONE_ID, process.env.DNS_HOST_NAME);
-// const updateDNSScript = require('./scripts/updateDNSScript')(route53, notificationScript, process.env.HOSTED_ZONE_ID, process.env.DNS_HOST_NAME);
+const updateDNSScript = new UpdateDNSScript(route53, notificationScript, process.env.DNS_HOST_NAME);
 
 
 
@@ -41,21 +40,4 @@ async function processRequest(event) {
   var homeIp = requestBody['homeIp'];
   var responseMsg = await updateDNSScript.update(homeIp);
   return responses.success(responseMsg);
-
-
 }
-
-
-
-
-  // return {
-  //   statusCode: 200,
-  //   body: JSON.stringify({
-  //     message: 'Go Serverless v1.0! Your function executed successfully!',
-  //     input: event,
-  //   }),
-  // };
-
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
-// };

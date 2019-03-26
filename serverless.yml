@@ -24,7 +24,6 @@ custom:
 
 plugins:
   - serverless-domain-manager  
-  # - serverless-aws-alias
 
 # you can add packaging information here
 #package:
@@ -50,7 +49,6 @@ functions:
     memorySize: 128
     environment:
       DNS_HOST_NAME: ${self:custom.config.ddnsHostName}
-      HOSTED_ZONE_ID: ${self:custom.config.ddnsHostedZoneID}
       TOPIC_ARN: ${self:custom.config.notificationTopicARN}
     events:      
       - http:

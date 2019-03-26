@@ -18,8 +18,6 @@ Modify the following configuration parameters in config.json:
 
 `ddnsHostName` - Domain name, owned in Route 53, that you want to keep updated with a dynamic IP.
 
-`ddnsHostedZoneID` - Route53 hostedZoneID of ddnsHostName referenced above
-
 `notificationTopicARN` - TopicARN, in SNS, that you wish to receive notifications on.  Notifications are sent upon a successful DDNS update or failed attempt.
 
 
@@ -50,5 +48,3 @@ POST 'homeIp' JSON to API endpoint with AWS IAM Signature.  User api user is cre
 
 ## TODO
 1) Eliminate topicARN requirement, and instead send to arbitrary email and/or SMS 
-
-2) eliminate HostedZoneID requirement and install to search in route53 based on ddnsHostName

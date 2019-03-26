@@ -1,6 +1,5 @@
 {
     "apiDomainName": "",
     "ddnsHostName": "",
-    "ddnsHostedZoneID": "",
     "notificationTopicARN": ""
 }

@@ -10,7 +10,6 @@
   "author": "John Belisle",
   "license": "ISC",
   "devDependencies": {
-    "serverless-aws-alias": "^1.7.1",
     "serverless-domain-manager": "^3.2.1"
   }
 }
