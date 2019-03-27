@@ -6,7 +6,17 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "serverless",
+    "serverless framework",
+    "serverless ddns",
+    "dynamic dns",
+    "amazon web services",
+    "aws",
+    "api gateway",
+    "lambda",
+    "route 53"
+  ],
   "author": "John Belisle",
   "license": "ISC",
   "devDependencies": {
