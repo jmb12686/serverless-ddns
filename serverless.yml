@@ -12,7 +12,7 @@ provider:
 
 
 custom:
-  config: ${file(config.prod.json)} 
+  config: ${file(config.json)} 
   myStage: ${opt:stage, self:provider.stage}
   customDomain:
     domainName: ${self:custom.config.apiDomainName}
@@ -26,24 +26,19 @@ plugins:
   - serverless-domain-manager  
 
 # you can add packaging information here
-package:
+#package:
 #  include:
 #    - include-me.js
 #    - include-me-dir/**
-  exclude:
-    - node_modules/**
-    - '!node_modules/sms-service/package.json'    
-    - '!node_modules/sms-service/lib/**'
-    - '!node_modules/debug/**'    
-    - '!node_modules/ms/**'        
+#  exclude:
+#    - exclude-me.js
+#    - exclude-me-dir/**
 
 functions:
   echo-ip:
     handler: src/echoip.handler
     role: basicLambdaRole
     memorySize: 128
-    environment:
-      SMS_PHONE_NUMBER: ${self:custom.config.smsPhoneNumber}    
     events:
       - http:
           path: /
@@ -54,7 +49,7 @@ functions:
     memorySize: 128
     environment:
       DNS_HOST_NAME: ${self:custom.config.ddnsHostName}
-      SMS_PHONE_NUMBER: ${self:custom.config.smsPhoneNumber}
+      TOPIC_ARN: ${self:custom.config.notificationTopicARN}
     events:      
       - http:
           path: /      
@@ -86,10 +81,6 @@ resources:
                     - logs:CreateLogStream
                     - logs:PutLogEvents
                   Resource: arn:aws:logs:*:*:*
-                - Effect: Allow
-                  Action:
-                    - sns:Publish
-                  Resource: '*'
     
     lambdaUpdateRoute53Role:
       Type: AWS::IAM::Role

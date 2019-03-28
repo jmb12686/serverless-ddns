@@ -2,9 +2,6 @@
 const constants = require('./Constants');
 const responses = constants.responses;
 
-const sms = require('sms-service');
-const smsService = new sms.SMSService();
-
 console.log('Loading echoip() function')
 
 module.exports.handler = async (event, context) => {
@@ -25,9 +22,8 @@ function validateRequest(event) {
     }
 }
 
-async function processRequest(event) {
+function processRequest(event) {
     var sourceIP = event['requestContext']['identity']['sourceIp'];
     console.log("Received GET request from IP ", sourceIP);
-    await smsService.sendSMS(process.env.SMS_PHONE_NUMBER, `Received GET request from IP ${sourceIP}`);
     return responses.success(sourceIP);
 }

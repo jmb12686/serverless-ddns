@@ -21,8 +21,5 @@
   "license": "ISC",
   "devDependencies": {
     "serverless-domain-manager": "^3.2.1"
-  },
-  "dependencies": {
-    "sms-service": "^1.0.0"
   }
 }
