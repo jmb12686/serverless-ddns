@@ -25,7 +25,7 @@ Modify the following configuration parameters in config.json:
 
 `ddnsHostName` - Domain name, owned in Route 53, that you want to keep updated with a dynamic IP.
 
-`notificationTopicARN` - TopicARN, in SNS, that you wish to receive notifications on.  Notifications are sent upon a successful DDNS update or failed attempt.
+`smsPhoneNumber` - Mobile phone number to receive notification SMS text messages upon successful or failed DNS update event.
 
 
 ## Deployment
@@ -53,5 +53,3 @@ POST 'homeIp' JSON to API endpoint with AWS IAM Signature.  User api user is cre
 
 `$ post_it.sh -credentials <aws_access_key>:<aws_secret_key> -url <api_url> -region us-east-1 -service execute-api -body "'{\"homeIp\":\"$ip\"}'"`
 
-## TODO
-1) Eliminate topicARN requirement, and instead send to arbitrary email and/or SMS 

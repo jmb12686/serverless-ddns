@@ -1,5 +1,5 @@
 {
     "apiDomainName": "",
     "ddnsHostName": "",
-    "notificationTopicARN": ""
+    "smsPhoneNumber": ""
 }
