@@ -19,6 +19,10 @@
   ],
   "author": "John Belisle",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmb12686/serverless-ddns.git"
+  },
   "devDependencies": {
     "serverless-domain-manager": "^3.2.1"
   }

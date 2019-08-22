@@ -6,7 +6,7 @@ service: serverless-ddns
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs10.x
   stage: dev
   region: us-east-1
 
@@ -23,7 +23,7 @@ custom:
     endpointType: 'edge'  
 
 plugins:
-  - serverless-domain-manager  
+  - serverless-domain-manager
 
 # you can add packaging information here
 #package:
