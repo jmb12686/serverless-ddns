@@ -1,6 +1,6 @@
 
 # serverless-ddns
-
+[![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
 ## Prerequisites
 Make sure you have the following installed before starting:
 * [nodejs](https://nodejs.org/en/download/)
