@@ -1,3 +1,5 @@
+org: johnbelisle
+app: serverless-ddns
 service: serverless-ddns 
 
 # You can pin your service to only deploy with a specific Serverless version
@@ -11,10 +13,13 @@ provider:
   region: us-east-1
   logs:
     restApi: true
+  tracing:
+    apiGateway: true
+    lambda: true
 
 
 custom:
-  config: ${file(config.json)} 
+  config: ${file(config.prod.json)} 
   myStage: ${opt:stage, self:provider.stage}
   customDomain:
     domainName: ${self:custom.config.apiDomainName}
@@ -59,7 +64,7 @@ functions:
           authorizer:
             type: aws_iam                     
 resources:
-  Resources:
+  Resources:    
     basicLambdaRole:
       Type: AWS::IAM::Role
       Properties:
@@ -82,8 +87,12 @@ resources:
                     - logs:CreateLogGroup
                     - logs:CreateLogStream
                     - logs:PutLogEvents
-                  Resource: arn:aws:logs:*:*:*
-    
+                  Resource: { "Fn::Join" : ["", ["arn:aws:logs:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":log-group:/aws/lambda/*:*"]]}
+                - Effect: Allow
+                  Action:
+                    - xray:PutTraceSegments
+                  Resource:
+                    - "*"                  
     lambdaUpdateRoute53Role:
       Type: AWS::IAM::Role
       Properties:
@@ -106,10 +115,12 @@ resources:
                     - logs:CreateLogGroup
                     - logs:CreateLogStream
                     - logs:PutLogEvents
-                  Resource: arn:aws:logs:*:*:*
+                  Resource: { "Fn::Join" : ["", ["arn:aws:logs:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":log-group:/aws/lambda/*:*"]]}
                 - Effect: Allow
                   Action:
-                    - route53:*
+                    - route53:ListHostedZones
+                    - route53:ChangeResourceRecordSets
+                    - route53:ListResourceRecordSets
                   Resource:
                     - "*"
                 - Effect: Allow
@@ -117,6 +128,11 @@ resources:
                     - sns:Publish
                     - sns:Subscribe
                   Resource: arn:aws:sns:us-east-1:197556904653:NotifyMe
+                - Effect: Allow
+                  Action:
+                    - xray:PutTraceSegments
+                  Resource:
+                    - "*"
     InvokeUpdateHomeDDNSAPIPolicy:
       Type: "AWS::IAM::ManagedPolicy"
       Properties:
@@ -133,3 +149,33 @@ resources:
         ManagedPolicyArns:
           - { "Ref": "InvokeUpdateHomeDDNSAPIPolicy" }
         UserName: update-homeddns-api-user    
+    MockResource:
+      Type: AWS::ApiGateway::Resource
+      Properties:
+        ParentId:
+          Fn::GetAtt:
+            - ApiGatewayRestApi # our default Rest API logical ID
+            - RootResourceId
+        PathPart: favicon.ico # the endpoint in your API that is set as proxy
+        RestApiId:
+          Ref: ApiGatewayRestApi
+    MockMethod:
+      Type: AWS::ApiGateway::Method
+      Properties:
+        AuthorizationType: None
+        HttpMethod: GET
+        ResourceId:
+          Ref: MockResource
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        MethodResponses:
+          - StatusCode: 200
+        Integration:
+          RequestTemplates:
+            application/json: |
+              {"statusCode": 200}
+          Type: MOCK
+          IntegrationResponses:
+            - ResponseTemplates:
+                application/json: ''
+              StatusCode: 200        
