@@ -38,6 +38,7 @@ function validateRequest(event) {
 async function processRequest(event) {
   var requestBody = JSON.parse(event.body);
   var homeIp = requestBody['homeIp'];
+  console.log('Request parsed - homeIp in request ['+homeIp+']');
   var responseMsg = await updateDNSScript.update(homeIp);
   return responses.success(responseMsg);
 }
