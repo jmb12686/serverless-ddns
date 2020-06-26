@@ -7,3 +7,4 @@ jspm_packages
 
 # prod config values
 config.prod.json
+config.dev.json

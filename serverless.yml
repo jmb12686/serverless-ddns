@@ -9,7 +9,7 @@ service: serverless-ddns
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: dev
+  stage: ${opt:stage, 'dev'}
   region: us-east-1
   logs:
     restApi: true
@@ -19,8 +19,7 @@ provider:
 
 
 custom:
-  config: ${file(config.prod.json)} 
-  myStage: ${opt:stage, self:provider.stage}
+  config: ${file(config.${self:provider.stage}.json)} 
   customDomain:
     domainName: ${self:custom.config.apiDomainName}
     # stage: 
@@ -31,15 +30,6 @@ custom:
 
 plugins:
   - serverless-domain-manager
-
-# you can add packaging information here
-#package:
-#  include:
-#    - include-me.js
-#    - include-me-dir/**
-#  exclude:
-#    - exclude-me.js
-#    - exclude-me-dir/**
 
 functions:
   echo-ip:
@@ -68,7 +58,7 @@ resources:
     basicLambdaRole:
       Type: AWS::IAM::Role
       Properties:
-        RoleName: BasicLambdaRoleServerlessDDNS
+        RoleName: BasicLambdaRoleServerlessDDNS-${self:provider.stage}
         AssumeRolePolicyDocument:
           Version: '2012-10-17'
           Statement:
@@ -78,7 +68,7 @@ resources:
                   - lambda.amazonaws.com
               Action: sts:AssumeRole        
         Policies:
-          - PolicyName: BasicLambdaRoleLoggingPolicy
+          - PolicyName: BasicLambdaRoleLoggingPolicy-${self:provider.stage}
             PolicyDocument:            
               Version: '2012-10-17'
               Statement:
@@ -96,7 +86,7 @@ resources:
     lambdaUpdateRoute53Role:
       Type: AWS::IAM::Role
       Properties:
-        RoleName: UpdateLambdaRoleServerlessDDNS
+        RoleName: UpdateLambdaRoleServerlessDDNS-${self:provider.stage}
         AssumeRolePolicyDocument:
           Version: '2012-10-17'
           Statement:
@@ -106,7 +96,7 @@ resources:
                   - lambda.amazonaws.com
               Action: sts:AssumeRole        
         Policies:
-          - PolicyName: UpdateRoute53LambdaRolePolicy
+          - PolicyName: UpdateRoute53LambdaRolePolicy-${self:provider.stage}
             PolicyDocument:            
               Version: '2012-10-17'
               Statement:
@@ -148,7 +138,7 @@ resources:
       Properties:
         ManagedPolicyArns:
           - { "Ref": "InvokeUpdateHomeDDNSAPIPolicy" }
-        UserName: update-homeddns-api-user    
+        UserName: update-homeddns-api-user-${self:provider.stage}    
     MockResource:
       Type: AWS::ApiGateway::Resource
       Properties:

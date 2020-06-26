@@ -43,6 +43,8 @@ Now, deploy the serverless stack:
 serverless deploy
 ```
 
+NOTE: Use `--stage prod` to deploy to prod
+
 ## Usage
 
 Usage instructions for interacting with the ddns API
