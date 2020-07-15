@@ -24,6 +24,6 @@
     "url": "git+https://github.com/jmb12686/serverless-ddns.git"
   },
   "devDependencies": {
-    "serverless-domain-manager": "^4.1.1"
+    "serverless-domain-manager": "^4.2.0"
   }
 }
